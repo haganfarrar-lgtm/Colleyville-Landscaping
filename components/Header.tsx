@@ -202,14 +202,14 @@ export default function Header() {
                 Home
               </Link>
               <Link
-                href="/cities/grapevine"
+                href="/cities/colleyville"
                 className="text-forest-800 hover:text-forest-600 py-2"
                 onClick={() => setIsOpen(false)}
               >
                 Services
               </Link>
               <Link
-                href="/cities/grapevine"
+                href="/cities/colleyville"
                 className="text-forest-800 hover:text-forest-600 py-2"
                 onClick={() => setIsOpen(false)}
               >
