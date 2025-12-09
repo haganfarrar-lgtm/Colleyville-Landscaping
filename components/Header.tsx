@@ -24,6 +24,7 @@ export default function Header() {
   // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      // Close dropdowns when clicking outside
       if (servicesRef.current && !servicesRef.current.contains(event.target as Node)) {
         setServicesOpen(false);
       }
@@ -38,6 +39,7 @@ export default function Header() {
   const closeAllDropdowns = () => {
     setServicesOpen(false);
     setCitiesOpen(false);
+    setIsOpen(false);
   };
 
   return (
@@ -201,20 +203,75 @@ export default function Header() {
               >
                 Home
               </Link>
-              <Link
-                href="/cities/colleyville"
-                className="text-forest-800 hover:text-forest-600 py-2"
-                onClick={() => setIsOpen(false)}
-              >
-                Services
-              </Link>
-              <Link
-                href="/cities/colleyville"
-                className="text-forest-800 hover:text-forest-600 py-2"
-                onClick={() => setIsOpen(false)}
-              >
-                Service Areas
-              </Link>
+              
+              {/* Mobile Services Accordion */}
+              <div className="py-2">
+                <button 
+                  className="flex items-center justify-between w-full text-forest-800 font-medium mb-2"
+                  onClick={() => setServicesOpen(!servicesOpen)}
+                >
+                  Services
+                  <ChevronDown size={16} className={`transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {servicesOpen && (
+                  <div className="pl-4 space-y-4 mt-2 bg-stone-50 p-4 rounded-lg">
+                    {serviceCategories.map((cat) => (
+                      <div key={cat.category}>
+                        <h4 className="font-semibold text-forest-700 text-sm mb-2 uppercase tracking-wider">{cat.name}</h4>
+                        <div className="grid grid-cols-1 gap-2">
+                          {getServicesByCategory(cat.category).slice(0, 4).map((service) => (
+                            <Link
+                              key={service.slug}
+                              href={`/cities/colleyville/services/${service.slug}`}
+                              className="text-sm text-stone-600 hover:text-forest-600 block py-1"
+                              onClick={() => setIsOpen(false)}
+                            >
+                              {service.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Service Areas Accordion */}
+              <div className="py-2">
+                <button 
+                  className="flex items-center justify-between w-full text-forest-800 font-medium mb-2"
+                  onClick={() => setCitiesOpen(!citiesOpen)}
+                >
+                  Service Areas
+                  <ChevronDown size={16} className={`transition-transform ${citiesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {citiesOpen && (
+                  <div className="pl-4 mt-2 bg-stone-50 p-4 rounded-lg">
+                    <div className="grid grid-cols-2 gap-2">
+                      {cities.slice(0, 10).map((city) => (
+                        <Link
+                          key={city.slug}
+                          href={`/cities/${city.slug}`}
+                          className="text-sm text-stone-600 hover:text-forest-600 block py-1"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {city.name}
+                        </Link>
+                      ))}
+                    </div>
+                    <Link
+                      href="/cities/colleyville"
+                      className="block mt-3 pt-3 border-t border-stone-200 text-center text-sm text-forest-700 font-medium"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      View All Areas
+                    </Link>
+                  </div>
+                )}
+              </div>
+
               <Link
                 href="/blog"
                 className="text-forest-800 hover:text-forest-600 py-2"
